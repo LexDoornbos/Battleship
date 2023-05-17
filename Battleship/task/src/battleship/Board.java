@@ -15,7 +15,7 @@ public class Board {
     }
 
     public void printBoard() {
-        System.out.print("  ");
+        System.out.print("\n  ");
         for (int i = 0; i < BOARDSIZE; i++) {
             System.out.print(i + 1 + " ");
         }
@@ -30,7 +30,7 @@ public class Board {
     }
 
     public void printFogBoard() {
-        System.out.print("  ");
+        System.out.print("\n  ");
         for (int i = 0; i < BOARDSIZE; i++) {
             System.out.print(i + 1 + " ");
         }
@@ -77,17 +77,20 @@ public class Board {
     }
 
     public void markShot(int x, int y) {
-        if(board[x][y] == 'O') {
+        if(board[x][y] == 'O' || board[x][y] == 'X') {
             board[x][y] = 'X';
             printFogBoard();
-            System.out.println("\nYou hit a ship!\n");
-            printBoard();
+            if (isAllShipsDestroyed()) {
+                System.out.println("\nYou sank the last ship. You won. Congratulations!");
+            } else if (isShipDestroyed(x, y) && !isAllShipsDestroyed()){
+                System.out.println("\nYou sank a ship! Specify a new target:");
+            } else {System.out.println("\nYou hit a ship! Try again:");}
         }
-        if(board[x][y] == '~') {
+
+        if(board[x][y] == '~' || board[x][y] == 'M') {
             board[x][y] = 'M';
             printFogBoard();
-            System.out.println("\nYou missed!\n");
-            printBoard();
+            System.out.println("\nYou missed! Try again:");
         }
     }
 
@@ -97,12 +100,42 @@ public class Board {
             for (int j = y1 - 1; j <= y2; j++) {
                 if (i >= 0 && i < BOARDSIZE && j >= 0 && j < BOARDSIZE) {
                     if (board[i][j] == 'O') {
-                        System.out.print("Error! You placed it too close to another one. Try again: ");
+                        System.out.println("\nError! You placed your ship too close to another one. Try again:");
                         return true;
                     }
                 }
             }
         }
         return false;
+    }
+
+    public boolean isAllShipsDestroyed() {
+        for (int i = 0; i < BOARDSIZE; i++) {
+            for (int j = 0; j < BOARDSIZE; j++) {
+                if (board[i][j] == 'O') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean isShipDestroyed(int x, int y) {
+        // Check for adjacent 'O' characters horizontally
+        if (y > 0 && board[x][y - 1] == 'O') {
+            return false; // Left adjacent 'O' exists
+        }
+        if (y < BOARDSIZE - 1 && board[x][y + 1] == 'O') {
+            return false; // Right adjacent 'O' exists
+        }
+
+        // Check for adjacent 'O' characters vertically
+        if (x > 0 && board[x - 1][y] == 'O') {
+            return false; // Upper adjacent 'O' exists
+        }
+        if (x < BOARDSIZE - 1 && board[x + 1][y] == 'O') {
+            return false; // Lower adjacent 'O' exists
+        }
+        return true; // No adjacent 'O' characters found, ship is destroyed
     }
 }

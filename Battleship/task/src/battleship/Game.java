@@ -2,19 +2,19 @@ package battleship;
 
 public class Game {
 
-    Board shipsBoard = new Board();
+    Board fullBoard = new Board();
     Player player1 = new Player();
 
     void gameSetup() {
-        shipsBoard.printBoard();
+        fullBoard.printBoard();
         for (Ship ship : Ship.values()) {
-            player1.placeShip(shipsBoard, ship);
+            player1.placeShip(fullBoard, ship);
         }
     }
 
     void gameStart() {
-        System.out.println("\nThe game starts!\n");
-        shipsBoard.printFogBoard();
-        player1.takeShot(shipsBoard);
+        System.out.println("\nThe game starts!");
+        fullBoard.printFogBoard();
+        player1.takeShot(fullBoard);
     }
 }

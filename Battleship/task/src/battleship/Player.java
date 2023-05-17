@@ -11,7 +11,7 @@ public class Player {
         do {
             Scanner scanner = new Scanner(System.in);
             // Ask user for placement start- and end-Coordinates
-            System.out.printf("\nEnter the coordinates of %s (%d cells):\n", ship.name, ship.size);
+            System.out.printf("\nEnter the coordinates of the %s (%d cells):\n\n", ship.name, ship.size);
 
             String startCoord = scanner.next().trim();
             String endCoord = scanner.next().trim();
@@ -56,7 +56,7 @@ public class Player {
 
     private boolean isValidInput(String Coord) {
         boolean valid = Coord.matches("[A-J]([1-9]|10)");
-        System.out.println(valid ? "" : "Error: invalid input!");
+        System.out.print(valid ? "" : "\nError: invalid input!");
         return valid;
     }
 
@@ -79,23 +79,22 @@ public class Player {
             else {inputSize = Math.abs(x2 - x1) + 1;}
         } else {
             // Error messagage if input is not horizontal of vertical
-            System.out.println("Error! Place your ship horizontally or vertically.");
+            System.out.println("\nError! Place your ship horizontally or vertically.");
         }
 
         // check if inputsize matches ship size
         if (inputSize == ship.size) {
-            System.out.println("input matches ship size.");
             return true;
         } else {
-            System.out.println("Error! Wrong size of ship.");
+            System.out.println("\nError! Wrong size of ship.");
             return false;
         }
     }
 
-    public void takeShot(Board shipsBoard) {
+    public void takeShot(Board fullBoard) {
         Scanner scanner = new Scanner(System.in);
-        boolean loop = false;
-        int targetX = 0, targetY = 0;
+//        boolean loop = false;
+        int targetX, targetY;
 
         do {
             System.out.println("\nTake a shot!\n");
@@ -104,12 +103,12 @@ public class Player {
             if (isValidInput(targetCoord)){
                 targetX = (int) targetCoord.charAt(0) - 'A';
                 targetY = Integer.parseInt(targetCoord.substring(1)) - 1;
-                shipsBoard.markShot(targetX, targetY);
+                fullBoard.markShot(targetX, targetY);
 
             } else {
-                loop = true;
-                System.out.println("Error! invalid input");
+//                loop = true;
+                System.out.println("\nError! invalid input");
             }
-        }   while (loop);
+        }   while (!fullBoard.isAllShipsDestroyed());
     }
 }
