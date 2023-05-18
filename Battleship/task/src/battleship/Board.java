@@ -79,18 +79,16 @@ public class Board {
     public void markShot(int x, int y) {
         if(board[x][y] == 'O' || board[x][y] == 'X') {
             board[x][y] = 'X';
-            printFogBoard();
             if (isAllShipsDestroyed()) {
                 System.out.println("\nYou sank the last ship. You won. Congratulations!");
             } else if (isShipDestroyed(x, y) && !isAllShipsDestroyed()){
-                System.out.println("\nYou sank a ship! Specify a new target:");
-            } else {System.out.println("\nYou hit a ship! Try again:");}
+                System.out.println("\nYou sank a ship!");
+            } else {System.out.println("\nYou hit a ship!");}
         }
 
         if(board[x][y] == '~' || board[x][y] == 'M') {
             board[x][y] = 'M';
-            printFogBoard();
-            System.out.println("\nYou missed! Try again:");
+            System.out.println("\nYou missed!");
         }
     }
 

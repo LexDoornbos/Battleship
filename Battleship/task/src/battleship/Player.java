@@ -4,6 +4,16 @@ import java.util.Scanner;
 
 public class Player {
 
+    String name;
+
+    public Player(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     void placeShip(Board board, Ship ship) {
 
         boolean loop;
@@ -91,24 +101,23 @@ public class Player {
         }
     }
 
-    public void takeShot(Board fullBoard) {
+    public void takeShot(Board fullBoard, Player player) {
         Scanner scanner = new Scanner(System.in);
-//        boolean loop = false;
+        boolean loop = false;
         int targetX, targetY;
 
         do {
-            System.out.println("\nTake a shot!\n");
+            System.out.printf("\n%s, it's your turn:\n\n", player.getName());
 
             String targetCoord = scanner.next().trim();
             if (isValidInput(targetCoord)){
                 targetX = (int) targetCoord.charAt(0) - 'A';
                 targetY = Integer.parseInt(targetCoord.substring(1)) - 1;
                 fullBoard.markShot(targetX, targetY);
-
             } else {
-//                loop = true;
+                loop = true;
                 System.out.println("\nError! invalid input");
             }
-        }   while (!fullBoard.isAllShipsDestroyed());
+        }   while (loop);
     }
 }
